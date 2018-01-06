@@ -41,6 +41,12 @@ defer rows.Close()
   }
   
 // FindByID .
-func (dao *userInfoDao) FindByID(id int) *UserInfo {	stmt, err := dao.Prepare(userInfoQueryByID)	checkErr(err)	defer stmt.Close()
-	row := stmt.QueryRow(id)	u := UserInfo{}	err = row.Scan(&u.UID, &u.UserName, &u.DepartName, &u.CreateAt)	checkErr(err)
-	return &u}
+func (dao *userInfoDao) FindByID(id int) *UserInfo {	
+	stmt, err := dao.Prepare(userInfoQueryByID)	
+	checkErr(err)	
+	defer stmt.Close()
+	row := stmt.QueryRow(id)	
+	u := UserInfo{}	err = row.Scan(&u.UID, &u.UserName, &u.DepartName, &u.CreateAt)	
+	checkErr(err)
+	return &u
+}
