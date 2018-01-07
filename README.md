@@ -10,13 +10,11 @@
 	formatter := render.New(render.Options{		
   IndentJSON: true,	
   })
-  
 	n := negroni.Classic()	
-  mx := mux.NewRouter()
-  
+	mx := mux.NewRouter(
 	initRoutes(mx, formatter)
 	n.UseHandler(mx)	
-  return n
+	return n
   }</code>
   
   在服务器端返回JSON的值，用以进行下一步的数据调用和处理，我们对这个返回的JSON值可以用test.js 中使用Jquery的Ajax方法请求这个地址，在本地的console记录下得到的数据打开firefox的开发者工具，可以看到console记录下了返回的数据。
