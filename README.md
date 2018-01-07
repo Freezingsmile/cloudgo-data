@@ -37,3 +37,27 @@ defer stmt.Close()
   }</code>
   
   在dao文件里面明确了UserInfoDao应该处理的是db还是tx,这样就可以在外部修复其在容器性质上的差异。无论是哪一种形式，都可以对DaoSource进行初始化。如果err存在，就对其进行处理（处理方式与LastInsertId()有关系），否则就不进行有效的操作。
+  
+  再来讨论一下orm改写的程序与原程序的区别。其已经没有了自己编写dao的过程，而是直接在service完成对数据库的操作。通过xorm传入一个结构指针，xorm就能通过结构本身的信息来生成与结构相对应的table，或者查询结果通过这个结构来呈现。但是在大数据处理量和高负荷下，orm方式操作数据库会导致较大的性能损耗，对多线程的支持也不完美。观察一下两者的服务请求的接受百分比就可以发现：
+  1. non-orm
+ <code>Percentage of the requests served within a certain time (ms)
+  50%     28
+  66%     39
+  75%     47
+  80%     53
+  90%     67
+  95%     81
+  98%     97
+  99%    104
+ 100%    126 (longest request)</code>
+ 2.orm
+ <code>Percentage of the requests served within a certain time (ms)
+  50%     27
+  66%     41
+  75%     48
+  80%     54
+  90%     71
+  95%     86
+  98%    113
+  99%    124
+ 100%    144 (longest request)</code>
